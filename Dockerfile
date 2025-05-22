@@ -1,17 +1,37 @@
-FROM alpine:latest
+FROM node:18-alpine AS frontend-build
+WORKDIR /frontend
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend/ ./
+ENV VITE_API_URL=http://localhost:8000
+RUN npm run build
 
+FROM python:3.11-slim
 WORKDIR /app
 
-# Install dependencies
-RUN apk add --no-cache \
-    curl \
-    docker \
-    docker-compose \
-    bash \
-    git
+# Install Node.js for frontend serving
+RUN apt-get update && apt-get install -y \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy project files
-COPY . .
+# Copy and set up backend
+WORKDIR /app/backend
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/ .
 
-# Default command to run the entire system
-CMD ["docker-compose", "up"] 
+# Copy built frontend
+WORKDIR /app/frontend
+COPY --from=frontend-build /frontend/dist ./dist
+RUN npm install -g serve
+
+# Setup start script
+WORKDIR /app
+COPY start.sh .
+RUN chmod +x start.sh
+
+EXPOSE 8000
+EXPOSE 8080
+
+CMD ["./start.sh"] 
