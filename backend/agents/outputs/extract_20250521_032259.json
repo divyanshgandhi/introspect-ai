@@ -1,0 +1,18 @@
+{
+  "title": "Inaccessible Content: YouTube Video Captions Unavailable",
+  "summary": "The content from the provided YouTube URL could not be accessed as the system was unable to retrieve captions for the video. This can occur if the video uploader has not enabled captions, or if there's a technical issue with the caption retrieval service. As a result, no insights could be extracted from the video's content.",
+  "insights": [
+    {
+      "point": "point**: Captions were not available for the provided YouTube video, preventing content analysis.",
+      "type": "fact"
+    },
+    {
+      "point": "point**: Ensure that YouTube videos have captions enabled by the uploader for successful content extraction.",
+      "type": "fact"
+    },
+    {
+      "point": "point**: If captions are unavailable, consider alternative methods for content analysis, such as manual transcription or analyzing other available metadata (e.g., video title, description).",
+      "type": "fact"
+    }
+  ]
+}

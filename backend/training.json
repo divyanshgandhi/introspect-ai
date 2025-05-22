@@ -1,0 +1,38 @@
+{
+    "data-type": "training",
+    "description": "All training data for introspect agent based on models and tools and various data types",
+    "data": [
+        {
+            "id": "1",
+            "input-type": "url",
+            "input-mime-type": "text/plain",
+            "output-mime-type": "text/plain",
+            "resource-mime-type": "video/*",
+            "message": "https://youtu.be/D7_ipDqhtwk",
+            "model": "gemini-2.5-flash-preview-04-17",
+            "agent": "extract_agent",
+            "system-prompt": "Extract key points of information and insights from this resource.",
+            "tool": {
+                "name": "youtube",
+                "description": "A tool that allows you to extract key points of information and insights from a YouTube video.",
+                "calls": [
+                    {
+                        "name": "get_youtube_video_captions",
+                        "description": "Get the captions for a YouTube video.",
+                        "parameters": {
+                            "url": "https://youtu.be/D7_ipDqhtwk"
+                        }
+                    },
+                    {
+                        "name": "get_youtube_video_data", 
+                        "description": "Get metadata and information about a YouTube video.",
+                        "parameters": {
+                            "url": "https://youtu.be/D7_ipDqhtwk"
+                        }
+                    }
+                ]
+            },
+            "response": "Okay, I can help with that. I will get the captions and the video data from the YouTube video to extract key points and insights.\n\nHere are the key points and insights from the video \"How We Build Effective Agents\" by Barry Zhang from Anthropic:\n\n• Video Title: How We Build Effective Agents\n• Author: AI Engineer (channel), Barry Zhang (speaker)\n• Speaker's Affiliation: Anthropic\n\nThe talk focuses on practical learnings and core ideas for building effective AI agents, drawing from a blog post titled \"Building Effective Agents.\"\n\nEvolution of AI Systems: The speaker traces the evolution from simple features (summarization, classification) to more sophisticated workflows (orchestrating multiple model calls in predefined flows) and finally to agents. Agents are distinguished by their ability to decide their own trajectory and operate independently based on environment feedback, unlike workflows which have predefined control flows.\n\nThree Core Ideas for Building Effective Agents:\n\n1 Don't Build Agents for Everything:\n   • Agents are best suited for scaling complex and valuable tasks in ambiguous problem spaces.\n   • If a task's decision tree can be easily mapped out, building an explicit workflow is often more cost-effective and controllable.\n   • Consider the value vs. cost (token usage) of the task. High-volume, low-cost tasks might be better suited for workflows focusing on common scenarios.\n   • Ensure critical capabilities don't create bottlenecks that multiply cost and latency. Simplify scope if necessary.\n   • Consider the cost of error and error discovery. High-stakes, hard-to-discover errors make it difficult to trust agents with autonomy. Mitigate with scope limitations (read-only, human-in-the-loop), but this affects scalability.\n   • Example Use Case: Coding is presented as a good agent use case due to its complexity, value, existing model capabilities, and easily verifiable output (unit tests, CI).\n\n2 Keep it Simple:\n   • Agents are fundamentally models using tools in a loop.\n   • Focus on the three core components initially to maximize iteration speed:\n      • Environment: The system the agent operates in.\n      • Tools: Interface for the agent to take action and get feedback.\n      • System Prompt: Defines goals, constraints, and ideal behavior.\n   • Optimize only after building and achieving desired behaviors with these basic components.\n\n3 Think Like Your Agents:\n   • Understand that agents operate based on a limited context window (e.g., 10-20k tokens).\n   • Put yourself in the agent's context to see if the information provided is sufficient and coherent for the task.\n   • Example: Consider the perspective of a computer use agent receiving only a static screenshot and a poor description. Realize the crucial need for context like screen resolution, recommended actions, and limitations.\n   • Use models (like Claude) to help understand the agent's perspective: ask if instructions are ambiguous, if tool descriptions make sense, or why the agent made a certain decision based on its trajectory. This supplements, but doesn't replace, your own understanding.\n\nPersonal Musings and Open Questions:\n\n• Budget Awareness: How to define and enforce budgets (time, money, tokens) for agents to enable more production use cases.\n• Self-Evolving Tools: Using models to design and improve their own tool ergonomics, making agents more general-purpose.\n• Multi-Agent Collaboration: Expecting more multi-agent systems in production soon due to parallelization, separation of concerns, and context window protection. A big open question is how agents will effectively communicate with each other, moving beyond rigid synchronous turn-taking to asynchronous communication and defined roles.\n\nFinal Takeaways:\n\n1 Don't build agents for everything.\n2 If building an agent, keep it as simple as possible initially.\n3 As you iterate, think like your agent to understand its perspective and help it improve."
+        }
+    ]
+}

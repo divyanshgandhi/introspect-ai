@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  # Backend API service
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - EXTRACT_MODEL=${EXTRACT_MODEL}
+      - PROMPT_MODEL=${PROMPT_MODEL}
+    volumes:
+      - ./backend:/app
+      - backend_venv:/app/.venv
+    restart: unless-stopped
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend_venv:

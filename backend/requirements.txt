@@ -1,0 +1,9 @@
+agno==1.2.10
+python-dotenv==1.1.0
+google-genai==1.15.0
+youtube-transcript-api==1.0.3
+fastapi==0.110.0
+uvicorn==0.28.0
+python-multipart==0.0.9
+pydantic==2.6.3
+requests==2.31.0 

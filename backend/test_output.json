@@ -1,0 +1,18 @@
+{
+  "title": "YouTube Video Access Error",
+  "summary": "Unable to access the YouTube video at https://www.youtube.com/watch?v=d1xFvRD2knU. This could be due to regional restrictions, privacy settings, age restrictions, or the video being unavailable/deleted.",
+  "insights": [
+    {
+      "point": "The system encountered an error processing the content.",
+      "type": "fact"
+    },
+    {
+      "point": "Consider checking if the URL is correct and accessible.",
+      "type": "actionable"
+    },
+    {
+      "point": "Try using a different source for similar information.",
+      "type": "actionable"
+    }
+  ]
+}
