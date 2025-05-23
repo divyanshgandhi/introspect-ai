@@ -1,0 +1,34 @@
+{
+  "title": "Build a Multimodal Agentic App with Flutter, Vertex AI & Firebase",
+  "summary": "This video demonstrates how to build multimodal agentic applications using Flutter, Vertex AI, and Firebase. It introduces AI agents as applications that achieve goals by observing and acting upon the world through tools, powered by large language models like Google's Gemini. The Firebase Vertex AI SDK is highlighted as a production-ready solution for integrating generative AI capabilities, including function calling and multimodal prompting, into Flutter apps. The demo showcases an agentic app manager that processes user feedback, takes actions (like changing app themes or fonts), and generates detailed reports. The video also touches upon image generation with Imagen 3 and real-time bidirectional audio streaming with Gemini Live API, emphasizing Flutter's single codebase advantage for multiplatform deployment.",
+  "insights": [
+    {
+      "point": "AI agents are applications that aim to achieve a goal by observing the world and acting upon it using tools, leveraging a language model for reasoning.",
+      "type": "fact"
+    },
+    {
+      "point": "Integrate AI and agentic functionality into Flutter apps in production using the Vertex AI in Firebase SDK, which is generally available and offers native integration with services like App Check for abuse protection.",
+      "type": "actionable"
+    },
+    {
+      "point": "Use Flutter to ship production-grade, multiplatform apps faster from a single codebase, minimizing development time when building agentic features with Vertex AI.",
+      "type": "fact"
+    },
+    {
+      "point": "When building an agent, define a system instruction to give the agent a persona and goal, and provide it with a list of tools (function calls) it can use to interact with the outside world.",
+      "type": "actionable"
+    },
+    {
+      "point": "Good tool and parameter descriptions are crucial for LLMs to determine tool functionality and generate useful argument values for function calls.",
+      "type": "actionable"
+    },
+    {
+      "point": "The Vertex AI SDK supports various generative models including Gemini 2.0/2.5 for text and multimodal interactions, Imagen 3 for image generation, and the new Live generative model for real-time bidirectional audio streaming.",
+      "type": "fact"
+    },
+    {
+      "point": "Building agentic apps is as straightforward as building any other app; consider agentic features and experiences as another tool in your app development toolbox.",
+      "type": "quote"
+    }
+  ]
+}

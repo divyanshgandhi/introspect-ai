@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  # Backend API service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000" # Exposed for main website nginx routing
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - EXTRACT_MODEL=${EXTRACT_MODEL:-gemini-1.5-flash}
+      - PROMPT_MODEL=${PROMPT_MODEL:-gemini-1.5-flash}
+    restart: unless-stopped
+    networks:
+      - introspect-network
+
+  # Frontend service (production build served by nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:80" # Exposed for main website nginx routing
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - introspect-network
+    depends_on:
+      - backend
+
+networks:
+  introspect-network:
+    driver: bridge
+
+volumes:
+  nginx_logs:
