@@ -44,7 +44,8 @@ Utility scripts are organized in the `scripts/` directory:
 ```
 scripts/
 ├── test-local.sh            # Local testing script for microservice mode
-└── run_test.sh              # Backend API testing script
+├── run_test.sh              # Backend API testing script
+└── test_rate_limiting.sh    # Rate limiting functionality test
 ```
 
 **Note**: Critical scripts remain in root for easy access:
@@ -62,10 +63,12 @@ backend/
 │   ├── main.py             # FastAPI app entry point
 │   ├── routes.py           # API endpoints (ED Tasks 1.2-1.4)
 │   ├── models.py           # Pydantic models for validation (ED Task 1.5)
+│   ├── rate_limiter.py     # Rate limiting implementation
 │   └── __init__.py
 ├── tests/                   # Unit and integration tests (ED Task 4.1)
 │   ├── test_api.py         # API endpoint tests
 │   ├── test_youtube.py     # YouTube processing tests
+│   ├── test_rate_limiting.py # Rate limiting tests
 │   └── test_output.json    # Test data
 ├── infra/                   # Infrastructure configuration
 ├── requirements.txt         # Python dependencies
@@ -117,6 +120,29 @@ The backend API structure implements all PRD requirements:
 - `POST /api/extract` - Extract insights from content
 - `POST /api/personalize` - Generate personalized prompts
 - `POST /api/process` - Combined processing endpoint
+- `GET /api/rate-limit-status` - Check rate limit status
+
+### Rate Limiting Implementation
+The API includes basic rate limiting to prevent abuse:
+
+**Features**:
+- **Limit**: 5 requests per 24 hours per IP address
+- **Scope**: All processing endpoints (extract, personalize, process)
+- **Storage**: In-memory tracking (resets on server restart)
+- **Headers**: Rate limit information in all responses
+- **Proxy Support**: Handles X-Forwarded-For and X-Real-IP headers
+
+**Implementation**:
+- `backend/api/rate_limiter.py` - Core rate limiting logic
+- `backend/api/main.py` - Middleware for rate limit headers
+- `backend/api/routes.py` - Rate limiting dependencies on endpoints
+- `backend/tests/test_rate_limiting.py` - Comprehensive test suite
+
+**Testing**:
+```bash
+# Test rate limiting functionality
+./scripts/test_rate_limiting.sh
+```
 
 ## Alignment with ED Tasks
 
@@ -129,6 +155,7 @@ The current structure addresses these ED requirements:
 - ✅ 1.3: Personalize endpoint implemented in `backend/api/routes.py`
 - ✅ 1.4: Combined processing endpoint implemented
 - ✅ 1.5: Error handling and validation in `backend/api/models.py`
+- ✅ **Rate Limiting**: Basic rate limiting implemented (5 requests/24h per IP)
 
 **Frontend Integration (ED Section 2)**:
 - ✅ 2.1: API client service in `frontend/src/lib/api.ts`
@@ -144,6 +171,7 @@ The current structure addresses these ED requirements:
 - ✅ 4.1: Backend tests organized in `backend/tests/`
 - ✅ 4.2: Frontend test structure in place
 - ✅ 4.3: Integration test scripts in `scripts/`
+- ✅ **Rate Limiting Tests**: Comprehensive rate limiting test suite
 
 ### Microservice Architecture
 The structure supports the microservice deployment model:

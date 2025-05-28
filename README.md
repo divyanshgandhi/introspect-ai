@@ -25,6 +25,14 @@ Introspect AI uses a two-hop design:
 1. **Extract**: Strip every type of input (video, PDF, tweet, image) down to its most usable, action-oriented ideas
 2. **Personalize**: Fuse the extracted insights with user context to generate a personalized ChatGPT prompt
 
+### Rate Limiting
+
+The API includes basic rate limiting to prevent abuse:
+- **Limit**: 5 requests per 24 hours per IP address
+- **Scope**: Applies to all processing endpoints (`/api/extract`, `/api/personalize`, `/api/process`)
+- **Headers**: Rate limit information included in response headers
+- **Status**: Check remaining requests at `/api/rate-limit-status`
+
 ### Microservice Architecture
 
 This application runs as a **microservice** behind your main website's nginx configuration:
@@ -60,6 +68,10 @@ introspect-ai/
 ├── backend/              # Python FastAPI backend with Agno agents
 │   ├── agents/           # Agent implementation using Agno
 │   ├── api/              # FastAPI application
+│   │   ├── main.py       # FastAPI app with rate limiting middleware
+│   │   ├── routes.py     # API endpoints with rate limiting
+│   │   ├── models.py     # Pydantic models
+│   │   └── rate_limiter.py # Rate limiting implementation
 │   ├── tests/            # Backend unit and integration tests
 │   ├── infra/            # Infrastructure configuration
 │   ├── requirements.txt  # Python dependencies
@@ -76,7 +88,8 @@ introspect-ai/
 │   └── change-request.md # Main website integration guide
 ├── scripts/              # Utility scripts
 │   ├── test-local.sh     # Local testing script
-│   └── run_test.sh       # Backend testing script
+│   ├── run_test.sh       # Backend testing script
+│   └── test_rate_limiting.sh # Rate limiting test script
 ├── deploy.sh             # Production deployment
 ├── dev.sh                # Development setup
 ├── start.sh              # Container startup script

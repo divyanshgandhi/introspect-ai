@@ -167,10 +167,78 @@ POST /api/process
 Content-Type: multipart/form-data
 ```
 
+### Rate Limit Status API
+```
+GET /api/rate-limit-status
+```
+
 ### Health Check
 ```
 GET /api/health
 GET /health
+```
+
+## Rate Limiting
+
+The API implements rate limiting to prevent abuse and ensure fair usage:
+
+### Configuration
+- **Limit**: 5 requests per 24 hours per IP address
+- **Window**: 24-hour sliding window
+- **Scope**: All processing endpoints (`/api/extract`, `/api/personalize`, `/api/process`)
+- **Identification**: Based on client IP address (supports proxy headers)
+
+### Rate Limit Headers
+
+All API responses include rate limiting headers:
+
+```
+X-RateLimit-Limit: 5          # Maximum requests allowed
+X-RateLimit-Remaining: 3       # Requests remaining in current window
+X-RateLimit-Reset: 1640995200  # Unix timestamp when limit resets
+```
+
+### Rate Limit Status Endpoint
+
+Check your current rate limit status:
+
+```bash
+curl http://localhost:8000/api/rate-limit-status
+```
+
+Response:
+```json
+{
+  "max_requests": 5,
+  "window_hours": 24,
+  "remaining_requests": 3,
+  "reset_time": "2024-01-01T12:00:00",
+  "is_limited": false
+}
+```
+
+### Rate Limit Exceeded Response
+
+When the rate limit is exceeded, the API returns a 429 status code:
+
+```json
+{
+  "detail": {
+    "error": "Rate limit exceeded",
+    "message": "Maximum 5 requests allowed per 24 hours",
+    "remaining_requests": 0,
+    "reset_time": "2024-01-01T12:00:00"
+  }
+}
+```
+
+### Testing Rate Limiting
+
+Use the provided test script to verify rate limiting functionality:
+
+```bash
+# Test rate limiting
+./scripts/test_rate_limiting.sh
 ```
 
 ## Project Structure

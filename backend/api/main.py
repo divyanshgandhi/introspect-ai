@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, HttpUrl
 from typing import Optional, List, Dict, Any, Union
@@ -28,6 +28,34 @@ app.add_middleware(
 
 # Initialize the IntrospectAgent (shared instance)
 introspect_agent = IntrospectAgent()
+
+
+# Rate limiting middleware
+@app.middleware("http")
+async def add_rate_limit_headers(request: Request, call_next):
+    """
+    Middleware to add rate limit headers to all responses.
+    """
+    # Import here to avoid circular imports
+    from .rate_limiter import rate_limiter
+
+    response = await call_next(request)
+
+    # Add rate limit headers to response
+    try:
+        remaining = rate_limiter.get_remaining_requests(request)
+        reset_time = rate_limiter.get_reset_time(request)
+
+        response.headers["X-RateLimit-Limit"] = str(rate_limiter.max_requests)
+        response.headers["X-RateLimit-Remaining"] = str(remaining)
+
+        if reset_time:
+            response.headers["X-RateLimit-Reset"] = str(int(reset_time.timestamp()))
+    except Exception:
+        # If there's any error getting rate limit info, don't fail the request
+        pass
+
+    return response
 
 
 # Define Pydantic models for request/response validation

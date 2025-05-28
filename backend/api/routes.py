@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Request, Depends
 from typing import Optional, Dict, Any
 import json
 import io
@@ -18,6 +18,9 @@ from .models import (
 # Import introspect_agent from main
 from .main import introspect_agent
 
+# Import rate limiter
+from .rate_limiter import check_rate_limit, rate_limiter
+
 # Create a thread pool executor
 executor = ThreadPoolExecutor()
 
@@ -32,12 +35,16 @@ def run_in_threadpool(func, *args, **kwargs):
 
 @router.post("/extract", response_model=ExtractedData)
 async def extract_content(
-    file: Optional[UploadFile] = File(None), youtube_url: Optional[str] = Form(None)
+    request: Request,
+    file: Optional[UploadFile] = File(None),
+    youtube_url: Optional[str] = Form(None),
+    _: None = Depends(check_rate_limit),
 ):
     """
     Extract insights from content (file or YouTube URL).
 
     Returns structured data with title, summary and key insights.
+    Rate limited to 5 requests per 24 hours per IP address.
     """
     if not file and not youtube_url:
         raise HTTPException(
@@ -79,22 +86,27 @@ async def extract_content(
 
 
 @router.post("/personalize", response_model=PromptResponse)
-async def personalize_content(request: PersonalizeRequest):
+async def personalize_content(
+    request: Request,
+    personalize_request: PersonalizeRequest,
+    _: None = Depends(check_rate_limit),
+):
     """
     Generate a personalized prompt from extracted insights and user context.
+    Rate limited to 5 requests per 24 hours per IP address.
     """
     try:
         # Convert extracted data to dict if it's not already
-        if isinstance(request.extracted_data, dict):
-            extracted_data = request.extracted_data
+        if isinstance(personalize_request.extracted_data, dict):
+            extracted_data = personalize_request.extracted_data
         else:
-            extracted_data = request.extracted_data.dict()
+            extracted_data = personalize_request.extracted_data.dict()
 
         # Run the agent in a separate thread to avoid asyncio issues
         prompt = await run_in_threadpool(
             introspect_agent.generate_prompt,
             extracted_data=extracted_data,
-            user_context=request.user_context.dict(),
+            user_context=personalize_request.user_context.dict(),
         )
 
         return {"prompt": prompt}
@@ -107,14 +119,17 @@ async def personalize_content(request: PersonalizeRequest):
 
 @router.post("/process", response_model=ProcessResponse)
 async def process_content(
+    request: Request,
     file: Optional[UploadFile] = File(None),
     youtube_url: Optional[str] = Form(None),
     interests: str = Form(""),
     goals: str = Form(""),
     background: str = Form(""),
+    _: None = Depends(check_rate_limit),
 ):
     """
     Combined endpoint that extracts insights and generates a personalized prompt in one call.
+    Rate limited to 5 requests per 24 hours per IP address.
     """
     if not file and not youtube_url:
         raise HTTPException(
@@ -164,3 +179,22 @@ async def process_content(
         raise HTTPException(
             status_code=500, detail=f"Error processing content: {str(e)}"
         )
+
+
+@router.get("/rate-limit-status")
+async def get_rate_limit_status(request: Request):
+    """
+    Get current rate limit status for the requesting IP address.
+
+    Returns information about remaining requests and reset time.
+    """
+    remaining = rate_limiter.get_remaining_requests(request)
+    reset_time = rate_limiter.get_reset_time(request)
+
+    return {
+        "max_requests": rate_limiter.max_requests,
+        "window_hours": rate_limiter.window_hours,
+        "remaining_requests": remaining,
+        "reset_time": reset_time.isoformat() if reset_time else None,
+        "is_limited": remaining == 0,
+    }
