@@ -18,7 +18,7 @@ pip install -r requirements.txt
 # Start the backend server
 echo "Starting backend server..."
 cd api
-python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000 &
+python -m uvicorn main:app --reload --host 0.0.0.0 --port 8010 &
 BACKEND_PID=$!
 
 # Go back to root directory
@@ -35,7 +35,7 @@ if [ ! -d "node_modules" ]; then
 fi
 
 # Set environment variable for development
-export VITE_API_URL=http://localhost:8000
+export VITE_API_URL=http://localhost:8010
 
 # Start the frontend server
 npm run dev &
@@ -53,7 +53,7 @@ function cleanup {
 trap cleanup SIGINT SIGTERM
 
 echo "Development environment is running!"
-echo "Backend API: http://localhost:8000"
+echo "Backend API: http://localhost:8010"
 echo "Frontend: http://localhost:8080"
 echo "Press Ctrl+C to stop both servers."
 

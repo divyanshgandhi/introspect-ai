@@ -1,14 +1,14 @@
 # Introspect AI Project Configuration
 name: introspect-ai
 subdomain: introspect
-port: 9000
+port: 8010
 dockerfile: Dockerfile
 description: "AI-powered introspection and analysis tool"
 
 # Environment variables
 environment:
   NODE_ENV: production
-  VITE_API_URL: http://localhost:9000
+  VITE_API_URL: http://localhost:8010
   GOOGLE_AI_API_KEY: ${GOOGLE_AI_API_KEY}
   GEMINI_API_KEY: ${GEMINI_API_KEY}
   EXTRACT_MODEL: ${EXTRACT_MODEL}
@@ -34,7 +34,7 @@ resources:
 customLocations:
   - path: "/api"
     config: |
-      proxy_pass http://localhost:9000;
+      proxy_pass http://localhost:8010;
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

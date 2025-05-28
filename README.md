@@ -46,8 +46,8 @@ This application runs as a **microservice** behind your main website's nginx con
 ```
 Main Website (www.divyanshgandhi.com)
 ├── nginx handles SSL & routing
-├── /introspect → Introspect AI Frontend (port 3000)
-└── /introspect/api → Introspect AI Backend (port 8000)
+├── /introspect → Introspect AI Frontend (port 8080)
+└── /introspect/api → Introspect AI Backend (port 8010)
 ```
 
 ## Environment Setup

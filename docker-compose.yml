@@ -6,7 +6,7 @@ services:
     build:
       context: ./backend
     ports:
-      - "9000:9000"
+      - "8010:8010"
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
@@ -25,7 +25,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - VITE_API_URL=http://localhost:9000
+      - VITE_API_URL=http://localhost:8010
     volumes:
       - ./frontend:/app
       - /app/node_modules
