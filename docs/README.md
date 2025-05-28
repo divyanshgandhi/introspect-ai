@@ -241,6 +241,28 @@ Use the provided test script to verify rate limiting functionality:
 ./scripts/test_rate_limiting.sh
 ```
 
+## Frontend Rate Limiting Integration
+
+The frontend includes built-in rate limiting support with user-friendly messaging:
+
+### Features
+- **Real-time Status**: Displays remaining requests under the generate button
+- **Automatic Updates**: Rate limit status refreshes after each API call
+- **Error Handling**: Graceful handling of 429 rate limit errors
+- **Contact Information**: Direct link to @divyanshgandhi when limits are exceeded
+
+### User Experience
+- Users see "X of 5 free requests remaining" below the generate button
+- When rate limited, users see a message to contact @divyanshgandhi with a direct X link
+- Button is automatically disabled when no requests remain
+- Clear error messages distinguish between rate limits and other errors
+
+### Implementation
+- `frontend/src/hooks/useRateLimit.ts` - Custom hook for rate limit management
+- `frontend/src/components/RateLimitDisplay.tsx` - Rate limit status display
+- `frontend/src/lib/api.ts` - Enhanced API client with rate limit support
+- `frontend/src/components/ContentExtractor.tsx` - Updated with rate limiting
+
 ## Project Structure
 
 ```

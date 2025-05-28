@@ -19,6 +19,11 @@ A tool that transforms content from files/links into personalized ChatGPT prompt
 ./deploy.sh
 ```
 
+### Test Rate Limiting
+```bash
+./scripts/test_frontend_rate_limiting.sh
+```
+
 ## Architecture
 
 Introspect AI uses a two-hop design:
@@ -32,6 +37,7 @@ The API includes basic rate limiting to prevent abuse:
 - **Scope**: Applies to all processing endpoints (`/api/extract`, `/api/personalize`, `/api/process`)
 - **Headers**: Rate limit information included in response headers
 - **Status**: Check remaining requests at `/api/rate-limit-status`
+- **Frontend**: Built-in rate limit display and error handling
 
 ### Microservice Architecture
 
@@ -89,7 +95,8 @@ introspect-ai/
 ├── scripts/              # Utility scripts
 │   ├── test-local.sh     # Local testing script
 │   ├── run_test.sh       # Backend testing script
-│   └── test_rate_limiting.sh # Rate limiting test script
+│   ├── test_rate_limiting.sh # Rate limiting test script
+│   └── test_frontend_rate_limiting.sh # Frontend rate limiting test
 ├── deploy.sh             # Production deployment
 ├── dev.sh                # Development setup
 ├── start.sh              # Container startup script

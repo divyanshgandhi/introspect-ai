@@ -84,11 +84,14 @@ The frontend follows the ED integration requirements:
 frontend/
 ├── src/
 │   ├── components/         # React components (ED Task 2.2-2.3)
+│   │   ├── RateLimitDisplay.tsx # Rate limit status display
+│   │   └── ContentExtractor.tsx # Updated with rate limiting
 │   ├── lib/
 │   │   ├── api.ts         # API client service (ED Task 2.1)
 │   │   └── utils.ts       # Utility functions
-│   ├── pages/             # Page components
 │   ├── hooks/             # Custom React hooks
+│   │   └── useRateLimit.ts # Rate limit management hook
+│   ├── pages/             # Page components
 │   ├── App.tsx            # Main application component
 │   ├── main.tsx           # Application entry point
 │   └── index.css          # Global styles
@@ -161,6 +164,7 @@ The current structure addresses these ED requirements:
 - ✅ 2.1: API client service in `frontend/src/lib/api.ts`
 - ✅ 2.2-2.4: Components updated to use real API
 - ✅ 2.5: Result caching implemented
+- ✅ **Rate Limiting UI**: Frontend rate limit display and error handling
 
 **DevOps & Infrastructure (ED Section 3)**:
 - ✅ 3.1: Development environment setup via `dev.sh`

@@ -39,6 +39,21 @@ export interface APIError {
   detail?: string;
 }
 
+export interface RateLimitStatus {
+  max_requests: number;
+  window_hours: number;
+  remaining_requests: number;
+  reset_time: string | null;
+  is_limited: boolean;
+}
+
+export interface RateLimitError {
+  error: string;
+  message: string;
+  remaining_requests: number;
+  reset_time: string | null;
+}
+
 /**
  * Parse the error response from the API
  */
@@ -50,8 +65,16 @@ async function parseErrorResponse(response: Response): Promise<APIError> {
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
       const errorData = await response.json();
-      errorMessage = errorData.detail || errorData.message || 'Server error';
-      detail = errorData.detail;
+      
+      // Handle rate limit error specifically
+      if (response.status === 429 && errorData.detail) {
+        const rateLimitDetail = errorData.detail as RateLimitError;
+        errorMessage = rateLimitDetail.message || 'Rate limit exceeded';
+        detail = JSON.stringify(rateLimitDetail);
+      } else {
+        errorMessage = errorData.detail || errorData.message || 'Server error';
+        detail = errorData.detail;
+      }
     } else {
       errorMessage = await response.text() || `Error: ${response.status} ${response.statusText}`;
     }
@@ -133,6 +156,31 @@ export async function personalizeContent(
       throw error;
     } else {
       throw new Error('Failed to personalize content with your information');
+    }
+  }
+}
+
+/**
+ * Get current rate limit status
+ */
+export async function getRateLimitStatus(): Promise<RateLimitStatus> {
+  try {
+    const response = await fetch(`${API_URL}/api/rate-limit-status`, {
+      method: 'GET',
+    });
+    
+    if (!response.ok) {
+      const error = await parseErrorResponse(response);
+      throw new Error(error.message);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error getting rate limit status:', error);
+    if (error instanceof Error) {
+      throw error;
+    } else {
+      throw new Error('Failed to get rate limit status');
     }
   }
 }
