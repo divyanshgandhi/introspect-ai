@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Change to backend directory from scripts directory
+cd ../backend
+
 # Activate virtual environment if it exists
 if [ -d ".venv" ]; then
   source .venv/bin/activate
@@ -18,7 +21,7 @@ echo "Waiting for API server to start..."
 sleep 5
 
 # Run the test script
-cd ..
+cd ../tests
 python3 test_api.py
 
 # Kill the server process

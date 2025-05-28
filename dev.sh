@@ -54,7 +54,7 @@ trap cleanup SIGINT SIGTERM
 
 echo "Development environment is running!"
 echo "Backend API: http://localhost:8000"
-echo "Frontend: http://localhost:5173"
+echo "Frontend: http://localhost:8080"
 echo "Press Ctrl+C to stop both servers."
 
 # Keep the script running

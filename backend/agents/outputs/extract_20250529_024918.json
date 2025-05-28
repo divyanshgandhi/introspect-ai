@@ -1,0 +1,10 @@
+{
+  "title": "Content Inaccessible: Error Retrieving Video Captions",
+  "summary": "I was unable to access the content of the YouTube video at the provided URL (https://youtu.be/6Q_1QJsO4Ro?si=AW5CgSlWe4O-TU-) because the tool could not retrieve the captions. This may be due to the video not having captions available or an issue with the YouTube API.",
+  "insights": [
+    {
+      "point": "If a video lacks captions, consider manually transcribing key sections or seeking alternative resources with accessible text content to extract information.",
+      "type": "actionable"
+    }
+  ]
+}
