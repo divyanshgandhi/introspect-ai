@@ -1,0 +1,18 @@
+{
+  "title": "Inaccessible Content: YouTube Video 'test'",
+  "summary": "The requested YouTube video at 'https://www.youtube.com/watch?v=test' could not be accessed, and its captions could not be retrieved. This issue is most likely due to the video being unavailable on YouTube. Therefore, no insights could be extracted from the content itself.",
+  "insights": [
+    {
+      "point": "Content accessibility is crucial for analysis; ensure the provided URL is valid and the content is publicly available.",
+      "type": "actionable"
+    },
+    {
+      "point": "Errors in retrieving video captions can indicate that the video has been removed or is otherwise inaccessible.",
+      "type": "fact"
+    },
+    {
+      "point": "If a video is inaccessible, alternative methods for information gathering, such as searching for related articles or summaries, may be necessary.",
+      "type": "actionable"
+    }
+  ]
+}

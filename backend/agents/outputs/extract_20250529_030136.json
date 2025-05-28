@@ -1,0 +1,14 @@
+{
+  "title": "Content Inaccessible: YouTube Video Captions Unavailable",
+  "summary": "The captions for the provided YouTube video URL (https://www.youtube.com/watch?v=test) could not be retrieved. This issue commonly arises if the video is no longer available or if there are no transcripts provided for the video. Without access to the transcript, comprehensive analysis and insight extraction are not possible.",
+  "insights": [
+    {
+      "point": "If a video transcript is unavailable, consider checking the video's availability or seeking alternative sources for the content.",
+      "type": "actionable"
+    },
+    {
+      "point": "Caption retrieval errors can occur due to video unavailability or the absence of a published transcript by the video creator.",
+      "type": "fact"
+    }
+  ]
+}

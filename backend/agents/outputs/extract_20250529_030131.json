@@ -1,0 +1,10 @@
+{
+  "title": "Content Inaccessible: YouTube Video Not Found or Transcript Unavailable",
+  "summary": "The requested YouTube video content could not be accessed. Attempts to retrieve captions resulted in an error indicating that the video might be unavailable or that a transcript could not be retrieved. Therefore, no insights could be extracted from the specified URL.",
+  "insights": [
+    {
+      "point": "If a YouTube video is inaccessible or lacks a transcript, content analysis cannot proceed. Verify video availability and ensure captions are present for successful processing.",
+      "type": "actionable"
+    }
+  ]
+}

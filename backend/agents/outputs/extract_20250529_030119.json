@@ -1,0 +1,14 @@
+{
+  "title": "Content Inaccessible: YouTube Video Not Available",
+  "summary": "The requested YouTube video at 'https://www.youtube.com/watch?v=test' could not be accessed. The system attempted to retrieve captions but received an error indicating that the video might be unavailable or that a transcript could not be generated. Therefore, no insights or summaries can be extracted from the content.",
+  "insights": [
+    {
+      "point": "If a YouTube video is inaccessible or its transcript cannot be retrieved, it's crucial to verify the video's availability and check for potential issues with the URL or platform.",
+      "type": "actionable"
+    },
+    {
+      "point": "Common reasons for transcript retrieval failure include video deletion, privacy settings, or lack of auto-generated/manual captions.",
+      "type": "fact"
+    }
+  ]
+}

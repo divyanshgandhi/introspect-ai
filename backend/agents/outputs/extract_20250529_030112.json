@@ -1,0 +1,18 @@
+{
+  "title": "Content Inaccessible: https://www.youtube.com/watch?v=test",
+  "summary": "The content from the provided YouTube URL could not be accessed. This may be due to an invalid URL, the video being private, deleted, or otherwise unavailable. Consequently, no specific insights or summaries could be extracted from the video content itself.",
+  "insights": [
+    {
+      "point": "Always verify YouTube URLs for accuracy and availability before attempting to extract information, as invalid or inaccessible links will prevent content processing.",
+      "type": "actionable"
+    },
+    {
+      "point": "Error handling for external content retrieval should include clear communication to the user about why the content is unavailable.",
+      "type": "fact"
+    },
+    {
+      "point": "If a primary method of content extraction (e.g., captions) fails, attempt alternative methods or inform the user about the failure.",
+      "type": "actionable"
+    }
+  ]
+}
