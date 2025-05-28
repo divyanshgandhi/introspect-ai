@@ -3,7 +3,7 @@ WORKDIR /frontend
 COPY frontend/package*.json ./
 RUN npm install
 COPY frontend/ ./
-ENV VITE_API_URL=http://localhost:8000
+ENV VITE_API_URL=http://localhost:9000
 RUN npm run build
 
 FROM python:3.11-slim
@@ -31,7 +31,7 @@ WORKDIR /app
 COPY start.sh .
 RUN chmod +x start.sh
 
-EXPOSE 8000
+EXPOSE 9000
 EXPOSE 8080
 
 CMD ["./start.sh"] 

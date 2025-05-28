@@ -1,0 +1,70 @@
+# Introspect AI Project Configuration
+name: introspect-ai
+subdomain: introspect
+port: 9000
+dockerfile: Dockerfile
+description: "AI-powered introspection and analysis tool"
+
+# Environment variables
+environment:
+  NODE_ENV: production
+  VITE_API_URL: http://localhost:9000
+  GOOGLE_AI_API_KEY: ${GOOGLE_AI_API_KEY}
+  GEMINI_API_KEY: ${GEMINI_API_KEY}
+  EXTRACT_MODEL: ${EXTRACT_MODEL}
+  PROMPT_MODEL: ${PROMPT_MODEL}
+
+# Enable SSL and CORS
+ssl: true
+cors: "https://divyanshgandhi.com"
+
+# Health check configuration (backend health endpoint)
+healthCheck:
+  path: "/api/health"
+  interval: 30
+  timeout: 10
+  retries: 3
+
+# Resource limits
+resources:
+  memory: "1g"
+  cpus: "1.0"
+
+# Custom nginx locations for API routing
+customLocations:
+  - path: "/api"
+    config: |
+      proxy_pass http://localhost:9000;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      client_max_body_size 50M;
+      proxy_read_timeout 300s;
+  - path: "/"
+    config: |
+      proxy_pass http://localhost:8080;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+
+# Deployment hooks
+hooks:
+  preBuild: "echo 'Starting build process'"
+  postDeploy: "echo 'Deployment completed'"
+
+# Monitoring
+monitoring:
+  enabled: true
+  metrics:
+    - "cpu"
+    - "memory"
+    - "requests"
+  alerts:
+    - name: "high_cpu"
+      condition: "cpu > 85"
+      notification: "email"
+    - name: "api_down"
+      condition: "status != 200"
+      notification: "slack" 
