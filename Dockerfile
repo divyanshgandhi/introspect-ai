@@ -3,7 +3,7 @@ WORKDIR /frontend
 COPY frontend/package*.json ./
 RUN npm install
 COPY frontend/ ./
-ENV VITE_API_URL=http://localhost:8010
+ENV VITE_API_URL=""
 RUN npm run build
 
 FROM python:3.11-slim

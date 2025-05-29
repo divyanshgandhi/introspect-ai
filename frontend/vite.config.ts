@@ -7,6 +7,7 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   // Set base path for production deployment under /introspect
   base: "/",
+  publicDir: "public",
   server: {
     host: "::",
     port: 8080,
